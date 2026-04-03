@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Terminal, ShieldAlert, CheckCircle2, LockKeyhole, FileKey, Users, Hexagon } from 'lucide-react'
 
-const API = "http://127.0.0.1:8000"
+const API = "https://project-citadel-xiqp.onrender.com"
 
 function AdminPanel({ token }) {
   const [users, setUsers] = useState([])
