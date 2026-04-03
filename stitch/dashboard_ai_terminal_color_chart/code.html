@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CITADEL AI TERMINAL</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&amp;family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;family=Space+Grotesk:wght@300..700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary-fixed-dim": "#454747",
+                        "on-surface": "#e2e2e2",
+                        "error-container": "#93000a",
+                        "on-secondary-fixed-variant": "#3a3c3c",
+                        "secondary-fixed": "#c6c6c7",
+                        "primary-container": "#d4d4d4",
+                        "on-primary": "#1a1c1c",
+                        "inverse-on-surface": "#303030",
+                        "outline": "#919191",
+                        "tertiary-fixed": "#5d5f5f",
+                        "primary-fixed": "#5d5f5f",
+                        "on-primary-container": "#000000",
+                        "surface-container-highest": "#353535",
+                        "inverse-primary": "#5d5f5f",
+                        "tertiary-container": "#909191",
+                        "surface-bright": "#393939",
+                        "inverse-surface": "#e2e2e2",
+                        "on-tertiary-fixed": "#ffffff",
+                        "on-background": "#e2e2e2",
+                        "secondary-container": "#454747",
+                        "tertiary-fixed-dim": "#454747",
+                        "secondary": "#c6c6c7",
+                        "primary": "#ffffff",
+                        "on-tertiary": "#1a1c1c",
+                        "tertiary": "#e2e2e2",
+                        "on-error": "#690005",
+                        "on-secondary": "#1a1c1c",
+                        "on-secondary-container": "#e2e2e2",
+                        "on-tertiary-fixed-variant": "#e2e2e2",
+                        "on-primary-fixed": "#ffffff",
+                        "surface-container-high": "#2a2a2a",
+                        "surface-container": "#1f1f1f",
+                        "on-surface-variant": "#c6c6c6",
+                        "surface-tint": "#c6c6c7",
+                        "error": "#ffb4ab",
+                        "on-secondary-fixed": "#1a1c1c",
+                        "outline-variant": "#474747",
+                        "secondary-fixed-dim": "#aaabab",
+                        "surface-variant": "#353535",
+                        "on-tertiary-container": "#000000",
+                        "surface-dim": "#131313",
+                        "surface-container-low": "#1b1b1b",
+                        "surface-container-lowest": "#0e0e0e",
+                        "on-error-container": "#ffdad6",
+                        "on-primary-fixed-variant": "#e2e2e2",
+                        "background": "#131313",
+                        "surface": "#131313"
+                    },
+                    fontFamily: {
+                        "headline": ["Inter"],
+                        "body": ["Inter"],
+                        "label": ["Space Grotesk"],
+                        "mono": ["JetBrains Mono"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0px",
+                        "lg": "0px",
+                        "xl": "0px",
+                        "full": "0px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #131313; }
+        ::-webkit-scrollbar-thumb { background: #353535; }
+        body { font-family: 'Inter', sans-serif; background-color: #131313; color: #e2e2e2; }
+        .mono-data { font-family: 'JetBrains Mono', monospace; }
+        .sharp-edges { border-radius: 0px !important; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface">
+<!-- Fixed SideNavBar Shell -->
+<aside class="fixed left-0 top-0 h-full flex flex-col py-6 bg-neutral-900 dark:bg-[#1b1b1b] h-screen w-64 border-r-0 rounded-none z-50">
+<div class="px-6 mb-12">
+<h1 class="text-xl font-bold tracking-tighter text-white dark:text-[#ffffff] uppercase">CITADEL</h1>
+<p class="font-mono text-[10px] tracking-widest text-on-surface-variant">AI TERMINAL</p>
+</div>
+<nav class="flex-1 space-y-1">
+<!-- Active State: Dashboard -->
+<a class="flex items-center gap-3 px-4 py-3 bg-[#ffffff] text-[#131313] font-bold rounded-none" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-mono text-sm uppercase tracking-tight">Dashboard</span>
+</a>
+<!-- Inactive State: Settings -->
+<a class="flex items-center gap-3 px-4 py-3 text-[#c6c6c6] hover:bg-[#2a2a2a] transition-colors rounded-none" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-mono text-sm uppercase tracking-tight">Settings</span>
+</a>
+</nav>
+<div class="px-6 mt-auto">
+<div class="p-4 bg-surface-container-high border border-outline-variant/20">
+<p class="font-mono text-[10px] text-on-surface-variant uppercase mb-1">Status</p>
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 bg-primary"></div>
+<span class="font-mono text-xs text-primary">CONNECTED_NODE_01</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-64 flex flex-col h-screen overflow-hidden">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center w-full px-8 py-4 bg-neutral-900 dark:bg-[#131313] border-b-0">
+<div class="flex items-center gap-4">
+<span class="text-lg font-black tracking-tighter text-white dark:text-[#ffffff]">PROJECT CITADEL</span>
+<span class="bg-surface-container-highest px-2 py-0.5 font-mono text-[10px] text-on-surface">V4.0.2_STABLE</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="account_balance_wallet">account_balance_wallet</span>
+<span class="font-mono text-sm font-bold">$1,240,582.44</span>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-white" data-icon="notifications">notifications</button>
+<div class="w-8 h-8 bg-primary">
+<img alt="Trader Profile" class="w-full h-full object-cover grayscale" data-alt="Close up portrait of a serious male trader in a dark studio setting with minimalist lighting focusing on sharp facial features" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBa7Nl02MqQnHwozsoEqKjrF1SV7uCxPo_Nmyc25k6q6VYN1Ys549K4NZHsng4xgn5cg04mfnwqT3n-B43vbNToHFh4Tyjr3Qtr69TI5RNFnrhTkdIRiCgR12-h0R9wjfrBuWfBWUFhZGNE6GQxx61hBaRfLLvb6XdgBB6B_7fZ1l2ieGyfo8j_RTkMNVuW4rGMntK9UWdug5FLf8aYZ1Sh1azNGDa0e9DR1Hv2JrO7WMAsLFm0qIe7ocyRoceY865HjgqBmwIaUQds"/>
+</div>
+</div>
+</header>
+<!-- Chat Feed Area -->
+<section id="chat-feed" class="flex-1 overflow-y-auto p-8 space-y-12 pb-32">
+<!-- User Message -->
+<div class="max-w-4xl mx-auto flex flex-col items-end gap-4">
+<div class="bg-surface-container-high p-6 border-l-2 border-primary max-w-2xl">
+<p class="text-on-surface leading-relaxed">Here's the current SPX setup. Checking for a play.</p>
+</div>
+<div class="w-full max-w-3xl aspect-video bg-surface-container-low overflow-hidden border border-outline-variant/10">
+<img alt="SPX Chart" class="w-full h-full object-cover" data-alt="High precision financial candlestick chart showing SPX 500 index movements on a dark terminal screen with sharp lines and detailed data points" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAjqT5PckggS6V2upTbOGDrWrckC3eRV7Ide5CkpFANejSa9Qa1SOqBY9FuN0TN2M_zxTti6qLQZWUdJMWZEyoXq-D7-p6MvLrrU5sSoj5yUJ_1l_YlL2GP4ULn9L08_SOqgCmx4CW-QRgSrS0CimYRC8nEhDj9-jTPeTiym8Hwj97CptnDWBNnnxPKWw0Ur61-I6E0DIn99Gr0Hb9Ve_z-0s2kNT_Y_wQZkjeWFsS-UyLb9dcRichRCa-wagtmr4eRnjsFQkh7YfWP"/>
+</div>
+<span class="font-mono text-[10px] text-on-surface-variant">SENT 10:42:01 AM</span>
+</div>
+<!-- AI Response 1 -->
+<div class="max-w-4xl mx-auto flex flex-col items-start gap-4">
+<div class="flex items-center gap-2">
+<div class="w-4 h-4 bg-primary"></div>
+<span class="font-mono text-xs font-bold tracking-tighter uppercase">Citadel_AI</span>
+</div>
+<div class="bg-surface-container-lowest p-6 border border-outline-variant/20 max-w-2xl">
+<p class="text-on-surface leading-relaxed body-lg">
+                        Analyzing chart... Setup identified. Valid bullish divergence on 1H. Setup detected. 
+                        <br/><br/>
+                        How much are you willing to risk?
+                    </p>
+</div>
+</div>
+<!-- Risk Input Card (Interaction) -->
+<div class="max-w-4xl mx-auto flex flex-col items-start gap-4">
+<div class="w-full max-w-md bg-white text-black p-8 flex flex-col gap-6">
+<div>
+<label class="font-mono text-[10px] uppercase font-bold tracking-widest block mb-2">Risk % or $</label>
+<input class="w-full bg-transparent border-b border-black py-2 font-mono text-xl focus:outline-none placeholder:text-neutral-400" placeholder="e.g. 2% or 5000" type="text"/>
+</div>
+<button class="bg-black text-white py-4 px-8 font-mono text-sm font-bold uppercase flex items-center justify-between hover:bg-neutral-800 transition-colors">
+                        Calculate Exposure
+                        <span class="material-symbols-outlined" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- AI Response (Final Blueprint) -->
+<div class="max-w-4xl mx-auto flex flex-col items-start gap-4">
+<div class="flex items-center gap-2">
+<div class="w-4 h-4 bg-primary"></div>
+<span class="font-mono text-xs font-bold tracking-tighter uppercase">Citadel_AI</span>
+</div>
+<div class="bg-surface-container-lowest p-6 border border-outline-variant/20 w-full max-w-2xl">
+<p class="text-on-surface mb-6 body-lg">Trade Executed. Here is your blueprint.</p>
+<!-- Data Grid -->
+<div class="grid grid-cols-2 gap-[1px] bg-outline-variant/30 border border-outline-variant/30">
+<div class="bg-surface p-4">
+<span class="block font-mono text-[10px] text-on-surface-variant uppercase mb-1">Entry</span>
+<span class="block font-mono text-2xl font-bold">5400.25</span>
+</div>
+<div class="bg-surface p-4">
+<span class="block font-mono text-[10px] text-on-surface-variant uppercase mb-1">Stop Loss</span>
+<span class="block font-mono text-2xl font-bold">5385.00</span>
+</div>
+<div class="bg-surface p-4">
+<span class="block font-mono text-[10px] text-on-surface-variant uppercase mb-1">Take Profit</span>
+<span class="block font-mono text-2xl font-bold">5450.00</span>
+</div>
+<div class="bg-surface p-4">
+<span class="block font-mono text-[10px] text-on-surface-variant uppercase mb-1">Position Size</span>
+<span class="block font-mono text-2xl font-bold">4.2 Lots</span>
+</div>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="bg-surface-container-highest px-4 py-2 font-mono text-[10px] uppercase font-bold tracking-tighter hover:bg-white hover:text-black transition-colors">Modify Order</button>
+<button class="bg-surface-container-highest px-4 py-2 font-mono text-[10px] uppercase font-bold tracking-tighter hover:bg-white hover:text-black transition-colors">Close Position</button>
+</div>
+</div>
+</section>
+<!-- Floating Chat Input Bar -->
+<footer class="absolute bottom-10 left-[calc(16rem+2rem)] right-8 z-40">
+<div class="max-w-4xl mx-auto flex items-center gap-4 bg-surface-container-high/90 backdrop-blur-md p-2 border border-outline-variant/20">
+<button onclick="document.getElementById('file-upload').click()" class="p-4 text-on-surface-variant hover:text-white flex items-center justify-center transition-colors">
+<span class="material-symbols-outlined" data-icon="attachment">attachment</span>
+</button>
+<input type="file" id="file-upload" class="hidden" accept="image/*"/>
+<input id="chat-input" class="flex-1 bg-transparent border-none focus:ring-0 text-on-surface placeholder:text-on-surface-variant font-body" placeholder="Type a message or terminal command..." type="text"/>
+<button id="chat-submit" class="bg-primary text-black p-4 flex items-center justify-center hover:bg-on-surface-variant transition-colors">
+<span class="material-symbols-outlined" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+<div class="max-w-4xl mx-auto mt-2 flex justify-between">
+<span class="font-mono text-[8px] text-on-surface-variant tracking-[0.2em] uppercase">SYSTEM_ID: CITADEL_MAIN_TERM</span>
+<span class="font-mono text-[8px] text-on-surface-variant tracking-[0.2em] uppercase">AUTO_EXECUTION: ENABLED</span>
+</div>
+</footer>
+</main>
+<script>
+    const chatFeed = document.getElementById('chat-feed');
+    const chatInput = document.getElementById('chat-input');
+    const chatSubmit = document.getElementById('chat-submit');
+    const fileUpload = document.getElementById('file-upload');
+    let selectedFile = null;
+
+    fileUpload.addEventListener('change', (e) => {
+        if (e.target.files.length > 0) {
+            selectedFile = e.target.files[0];
+            chatInput.placeholder = `[ATTACHED: ${selectedFile.name}] Type your instruction...`;
+            chatInput.focus();
+        }
+    });
+
+    chatSubmit.addEventListener('click', sendMessage);
+    chatInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') sendMessage();
+    });
+
+    async function sendMessage() {
+        const text = chatInput.value.trim();
+        if (!text && !selectedFile) return;
+
+        // 1. Render User Message
+        appendUserMessage(text, selectedFile);
+        chatInput.value = '';
+        chatInput.placeholder = "Type a message or terminal command...";
+
+        // 2. Prepare Form Data
+        const formData = new FormData();
+        formData.append('live_data', JSON.stringify({
+            "asset": "SPX", // Future: Hook to real chart context
+            "volume_profile": "Dynamic",
+            "user_query": text || "Analyze chart"
+        }));
+
+        if (selectedFile) {
+            formData.append('chart_image', selectedFile);
+        } else {
+            // Mock 1x1 png if no file so FastAPI validation passes
+            const canvas = document.createElement('canvas');
+            canvas.width = 1; canvas.height = 1;
+            const blob = await new Promise(r => canvas.toBlob(r, 'image/png'));
+            formData.append('chart_image', blob, 'dummy.png');
+        }
+
+        selectedFile = null; // reset
+
+        // 3. Show loading state
+        const loadingId = appendAiLoading();
+
+        try {
+            // 4. Hit Citadel API
+            const response = await fetch('/api/v1/analyze-trade', {
+                method: 'POST',
+                body: formData
+            });
+
+            const data = await response.json();
+            replaceAiMessage(loadingId, data);
+            
+        } catch (error) {
+            console.error(error);
+            replaceAiMessage(loadingId, {
+                ai_reasoning: "SYSTEM ERROR: API unreachable. Ensure FastAPI server is running.",
+                verdict: "ERROR"
+            });
+        }
+    }
+
+    function appendUserMessage(text, file) {
+        let fileHtml = '';
+        if (file) {
+            const url = URL.createObjectURL(file);
+            fileHtml = `
+            <div class="w-full max-w-sm aspect-video bg-surface-container-low overflow-hidden border border-outline-variant/10 mt-2">
+                <img src="${url}" class="w-full h-full object-cover" />
+            </div>`;
+        }
+        
+        const timestamp = new Date().toLocaleTimeString();
+        const msgHtml = `
+            <div class="max-w-4xl mx-auto flex flex-col items-end gap-2 w-full mt-8">
+                <div class="bg-surface-container-high p-4 border-l-2 border-primary max-w-2xl text-on-surface leading-relaxed w-full">
+                    ${text || "[Image upload analysis request]"}
+                    ${fileHtml}
+                </div>
+                <span class="font-mono text-[10px] text-on-surface-variant uppercase">SENT ${timestamp}</span>
+            </div>
+        `;
+        chatFeed.insertAdjacentHTML('beforeend', msgHtml);
+        chatFeed.scrollTop = chatFeed.scrollHeight;
+    }
+
+    function appendAiLoading() {
+        const id = 'ai-' + Date.now();
+        const loadHtml = `
+            <div id="${id}" class="max-w-4xl mx-auto flex flex-col items-start gap-4 mt-8 w-full">
+                <div class="flex items-center gap-2">
+                    <div class="w-2 h-2 bg-primary animate-pulse"></div>
+                    <span class="font-mono text-xs font-bold tracking-tighter uppercase">Citadel_AI</span>
+                </div>
+                <div class="bg-surface-container-lowest p-6 border border-outline-variant/20 max-w-2xl text-on-surface body-lg animate-pulse w-full">
+                    <span class="font-mono text-xs">AWAITING SYNTHESIS PROTOCOL...</span>
+                </div>
+            </div>
+        `;
+        chatFeed.insertAdjacentHTML('beforeend', loadHtml);
+        chatFeed.scrollTop = chatFeed.scrollHeight;
+        return id;
+    }
+
+    function replaceAiMessage(id, data) {
+        let tradePlanHtml = '';
+        const isExecute = data.verdict === 'EXECUTE';
+        const colorClass = isExecute ? 'text-primary' : 'text-error';
+
+        if (data.trade_plan) {
+            tradePlanHtml = `
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-[1px] bg-outline-variant/30 border border-outline-variant/30 mt-6 font-mono">
+                <div class="bg-surface p-4">
+                    <span class="block text-[10px] text-on-surface-variant uppercase mb-1">EntryPoint</span>
+                    <span class="block text-xl font-bold">${data.trade_plan.entry || 'N/A'}</span>
+                </div>
+                <div class="bg-surface p-4">
+                    <span class="block text-[10px] text-on-surface-variant uppercase mb-1">Verdict</span>
+                    <span class="block text-xl font-bold ${colorClass}">${data.verdict}</span>
+                </div>
+                <div class="bg-surface p-4">
+                    <span class="block text-[10px] text-error uppercase mb-1">StopLoss</span>
+                    <span class="block text-xl font-bold">${data.trade_plan.sl || 'N/A'}</span>
+                </div>
+                <div class="bg-surface p-4">
+                    <span class="block text-[10px] text-primary uppercase mb-1">TakeProfit</span>
+                    <span class="block text-xl font-bold">${data.trade_plan.tp || 'N/A'}</span>
+                </div>
+            </div>
+            `;
+        } else {
+            tradePlanHtml = `
+            <div class="mt-4 bg-surface p-4 border border-outline-variant/30 w-fit">
+                <span class="block font-mono text-[10px] text-on-surface-variant uppercase mb-1">Final Verdict</span>
+                <span class="block font-mono text-xl font-bold ${colorClass}">${data.verdict || 'ERROR'}</span>
+            </div>`;
+        }
+
+        const msgHtml = `
+            <div class="flex items-center gap-2 w-full">
+                <div class="w-4 h-4 ${isExecute ? 'bg-primary' : 'bg-error'}"></div>
+                <span class="font-mono text-xs font-bold tracking-tighter uppercase">Citadel_AI</span>
+            </div>
+            <div class="bg-surface-container-lowest p-6 border border-outline-variant/20 w-full max-w-4xl mt-2">
+                <p class="text-on-surface leading-loose text-sm">${data.ai_reasoning || data.error || 'Empty response.'}</p>
+                ${tradePlanHtml}
+            </div>
+        `;
+        const oldEl = document.getElementById(id);
+        if (oldEl) {
+            oldEl.className = "max-w-4xl mx-auto flex flex-col items-start gap-2 w-full mt-8";
+            oldEl.innerHTML = msgHtml;
+        }
+        chatFeed.scrollTop = chatFeed.scrollHeight;
+    }
+</script>
+</body></html>

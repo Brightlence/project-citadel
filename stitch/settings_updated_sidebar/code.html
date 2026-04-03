@@ -1,0 +1,228 @@
+<html class="dark" lang="en"><head></head><body class="bg-background text-on-background overflow-hidden">```html
+
+
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PROJECT CITADEL - Settings</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&amp;family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;family=Space+Grotesk:wght@300..700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "primary-fixed-dim": "#454747",
+                "on-surface": "#e2e2e2",
+                "error-container": "#93000a",
+                "on-secondary-fixed-variant": "#3a3c3c",
+                "secondary-fixed": "#c6c6c7",
+                "primary-container": "#d4d4d4",
+                "on-primary": "#1a1c1c",
+                "inverse-on-surface": "#303030",
+                "outline": "#919191",
+                "tertiary-fixed": "#5d5f5f",
+                "primary-fixed": "#5d5f5f",
+                "on-primary-container": "#000000",
+                "surface-container-highest": "#353535",
+                "inverse-primary": "#5d5f5f",
+                "tertiary-container": "#909191",
+                "surface-bright": "#393939",
+                "inverse-surface": "#e2e2e2",
+                "on-tertiary-fixed": "#ffffff",
+                "on-background": "#e2e2e2",
+                "secondary-container": "#454747",
+                "tertiary-fixed-dim": "#454747",
+                "secondary": "#c6c6c7",
+                "primary": "#ffffff",
+                "on-tertiary": "#1a1c1c",
+                "tertiary": "#e2e2e2",
+                "on-error": "#690005",
+                "on-secondary": "#1a1c1c",
+                "on-secondary-container": "#e2e2e2",
+                "on-tertiary-fixed-variant": "#e2e2e2",
+                "on-primary-fixed": "#ffffff",
+                "surface-container-high": "#2a2a2a",
+                "surface-container": "#1f1f1f",
+                "on-surface-variant": "#c6c6c6",
+                "surface-tint": "#c6c6c7",
+                "error": "#ffb4ab",
+                "on-secondary-fixed": "#1a1c1c",
+                "outline-variant": "#474747",
+                "secondary-fixed-dim": "#aaabab",
+                "surface-variant": "#353535",
+                "on-tertiary-container": "#000000",
+                "surface-dim": "#131313",
+                "surface-container-low": "#1b1b1b",
+                "surface-container-lowest": "#0e0e0e",
+                "on-error-container": "#ffdad6",
+                "on-primary-fixed-variant": "#e2e2e2",
+                "background": "#131313",
+                "surface": "#131313"
+              },
+              fontFamily: {
+                "headline": ["Inter"],
+                "body": ["Inter"],
+                "label": ["Space Grotesk"],
+                "mono": ["JetBrains Mono"]
+              },
+              borderRadius: {"DEFAULT": "0px", "lg": "0px", "xl": "0px", "full": "9999px"},
+            },
+          },
+        }
+    </script>
+<style>
+        body {
+            background-color: #131313;
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        input:focus {
+            outline: none !important;
+            border-bottom-color: #ffffff !important;
+            box-shadow: none !important;
+        }
+        .mono-data {
+            font-family: 'JetBrains Mono', monospace;
+        }
+    </style>
+<!-- SideNavBar Shell -->
+<aside class="fixed left-0 top-0 h-full flex flex-col py-6 bg-neutral-900 dark:bg-[#1b1b1b] h-screen w-64 border-r-0 rounded-none z-50">
+<div class="px-6 mb-12">
+<h1 class="text-lg font-bold tracking-tighter text-white dark:text-[#ffffff] font-mono">TERMINAL_AI</h1>
+<p class="text-[10px] mono-data tracking-widest text-on-surface-variant opacity-40 uppercase mt-1">v2.0.4-STABLE</p>
+</div>
+<nav class="flex-1 flex flex-col">
+<!-- Top Actions -->
+<div class="flex flex-col gap-1 mb-8">
+<a class="flex items-center gap-4 px-6 py-3 text-[#c6c6c6] hover:text-white hover:bg-[#353535] transition-colors rounded-none" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="add_circle">add_circle</span>
+<span class="mono-data text-xs uppercase tracking-wider">New Session</span>
+</a>
+<div class="mt-4 px-6">
+<div class="flex items-center gap-4 py-2 text-[#c6c6c6]">
+<span class="material-symbols-outlined text-xl" data-icon="history">history</span>
+<span class="mono-data text-xs uppercase tracking-wider">Previous Sessions</span>
+</div>
+<div class="flex flex-col gap-2 mt-2 ml-9">
+<a class="text-[10px] mono-data text-on-surface-variant hover:text-white transition-colors" href="#">SPX SETUP - 10:42 AM</a>
+<a class="text-[10px] mono-data text-on-surface-variant hover:text-white transition-colors" href="#">BTC SCALP - 9:15 AM</a>
+<a class="text-[10px] mono-data text-on-surface-variant hover:text-white transition-colors" href="#">ETH_LIQUIDITY_MAP</a>
+</div>
+</div>
+</div>
+<!-- Bottom Actions -->
+<div class="mt-auto mb-4 flex flex-col gap-0">
+<!-- Settings: ACTIVE -->
+<a class="flex items-center gap-4 px-6 py-4 bg-[#2a2a2a] text-white border-l-2 border-white transition-all" href="#">
+<span class="material-symbols-outlined text-xl" data-icon="settings" style="font-variation-settings: 'FILL' 1;">settings</span>
+<span class="mono-data text-xs uppercase tracking-wider font-bold">Settings</span>
+</a>
+<!-- Profile -->
+</div>
+</nav>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-64 min-h-screen bg-surface flex flex-col">
+<!-- TopAppBar Shell -->
+<header class="flex justify-between items-center w-full px-8 py-4 bg-neutral-900 dark:bg-[#131313] border-b-0">
+<div>
+<span class="text-sm font-black tracking-widest text-white dark:text-[#ffffff] font-headline uppercase">PROJECT CITADEL</span>
+</div>
+<div class="flex items-center gap-6">
+<button class="text-[#c6c6c6] hover:text-white opacity-80 transition-opacity">
+<span class="material-symbols-outlined" data-icon="terminal">terminal</span>
+</button>
+<button class="text-[#c6c6c6] hover:text-white opacity-80 transition-opacity">
+<span class="material-symbols-outlined" data-icon="notifications_none">notifications_none</span>
+</button>
+<div class="w-8 h-8 bg-surface-container-high border border-outline-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-sm" data-icon="person">person</span>
+</div>
+</div>
+</header>
+<!-- Settings Content Area -->
+<section class="flex-1 max-w-4xl w-full mx-auto px-12 py-16 flex flex-col gap-16">
+<header class="flex flex-col gap-2">
+<h2 class="text-4xl font-black tracking-tighter font-headline uppercase">Security &amp; Profile</h2>
+<div class="h-px w-12 bg-primary"></div>
+</header>
+<!-- Form Section -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-12">
+<div class="md:col-span-8 flex flex-col gap-12">
+<!-- Username Field -->
+<div class="flex flex-col gap-4">
+<label class="text-[10px] mono-data text-on-surface-variant uppercase tracking-widest">Username</label>
+<input class="bg-transparent border-0 border-b border-outline-variant py-3 px-0 font-headline text-lg text-primary focus:border-primary transition-all rounded-none" placeholder="Enter username" type="text" value="ARCHITECT_NULL"/>
+<p class="text-[11px] text-on-surface-variant italic">Unique identifier used within the Citadel network nodes.</p>
+</div>
+<!-- Email Field -->
+<div class="flex flex-col gap-4">
+<label class="text-[10px] mono-data text-on-surface-variant uppercase tracking-widest">Email Address</label>
+<input class="bg-transparent border-0 border-b border-outline-variant py-3 px-0 font-headline text-lg text-primary focus:border-primary transition-all rounded-none" placeholder="email@domain.com" type="email" value="architect@citadel.ai"/>
+</div>
+<!-- Change Password -->
+<div class="pt-4">
+<button class="group flex items-center gap-2 text-primary font-bold font-headline text-sm uppercase tracking-tight hover:opacity-70 transition-opacity">
+                            Change Password
+                            <span class="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform" data-icon="arrow_forward">arrow_forward</span>
+</button>
+<div class="mt-1 h-0.5 w-full bg-surface-container-high"></div>
+</div>
+</div>
+<!-- Secondary Info / Aesthetic Side Panel -->
+<div class="md:col-span-4 border-l border-outline-variant pl-8 flex flex-col gap-8 opacity-60">
+<div class="flex flex-col gap-2">
+<span class="text-[10px] mono-data uppercase">Node Status</span>
+<div class="flex items-center gap-2">
+<div class="w-1.5 h-1.5 bg-primary"></div>
+<span class="text-xs font-bold font-headline uppercase">Verified Active</span>
+</div>
+</div>
+<div class="flex flex-col gap-2">
+<span class="text-[10px] mono-data uppercase">Member Since</span>
+<span class="text-xs font-bold font-headline uppercase">Epoch 2419.01</span>
+</div>
+<div class="mt-auto">
+<div class="bg-surface-container-low p-4">
+<p class="text-[10px] leading-relaxed mono-data text-on-surface-variant">
+                                System settings are applied instantly across all terminal nodes. Ensure your decryption key is backed up before modifying credentials.
+                            </p>
+</div>
+</div>
+</div>
+</div>
+<!-- Danger Zone -->
+<div class="mt-auto border-t border-outline-variant pt-16 pb-12 flex flex-col gap-8">
+<div class="flex flex-col gap-2">
+<h3 class="text-xs mono-data uppercase tracking-[0.2em] font-bold text-on-surface-variant">Critical Actions</h3>
+</div>
+<div class="bg-surface-container-lowest p-8 flex justify-between items-center">
+<div class="flex flex-col gap-1">
+<span class="font-headline font-bold text-lg uppercase tracking-tight">Delete Account</span>
+<p class="text-xs text-on-surface-variant max-w-sm">This action is permanent. All algorithmic trading history and ledger data will be purged from the Citadel mainnet.</p>
+</div>
+<button class="bg-primary text-on-primary px-8 py-4 font-black font-headline uppercase text-sm tracking-tighter hover:bg-on-surface-variant transition-colors active:scale-95 transform">
+                        Terminate Terminal
+                    </button>
+</div>
+</div>
+</section>
+<!-- Aesthetic Bottom Gutter -->
+<footer class="mt-auto w-full px-12 py-4 border-t border-outline-variant/10 flex justify-between items-center">
+<div class="flex gap-4">
+<span class="text-[9px] mono-data text-on-surface-variant">SESSION_ID: 99x-A21</span>
+<span class="text-[9px] mono-data text-on-surface-variant">LATENCY: 14MS</span>
+</div>
+<div class="text-[9px] mono-data text-on-surface-variant uppercase tracking-widest">
+                PROJECT_CITADEL // ENCRYPTED_CONNECTION
+            </div>
+</footer>
+</main>
+<!-- Visual Texture Element (Right Aligned Accent) -->
+<div class="fixed right-0 top-0 h-screen w-1 bg-primary opacity-20"></div>
+```</body></html>

@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    font-family: 'Inter', sans-serif;
+    background-color: #131313;
+    color: #e2e2e2;
+  }
+}
+
+.material-symbols-outlined {
+  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+
+::-webkit-scrollbar { 
+  width: 4px; 
+}
+
+::-webkit-scrollbar-track { 
+  background: #131313; 
+}
+
+::-webkit-scrollbar-thumb { 
+  background: #353535; 
+}
+
+.mono-data { font-family: 'JetBrains Mono', monospace; }
+.sharp-edges { border-radius: 0px !important; }
