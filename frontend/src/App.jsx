@@ -273,6 +273,7 @@ function Dashboard({ sessionToken, user, onLogout }) {
         <div className="flex flex-col mt-auto pb-4">
           <a onClick={() => setView('SETTINGS')} className={`flex items-center gap-3 px-6 py-4 cursor-pointer border-l-4 transition-all mb-2 ${view === 'SETTINGS' ? 'bg-white text-black font-bold border-primary' : 'text-[#919191] border-transparent hover:text-white hover:bg-[#2a2a2a]'}`}><span className={`material-symbols-outlined text-[20px]`}>{user?.role === 'ADMIN' ? 'admin_panel_settings' : 'settings'}</span> <span className="font-mono text-xs tracking-widest font-bold uppercase">{user?.role === 'ADMIN' ? 'Super Settings' : 'Settings'}</span></a>
           <a onClick={onLogout} className="flex items-center gap-3 px-6 py-4 text-[#ffb4ab] cursor-pointer border-l-4 border-transparent hover:border-[#ffb4ab] hover:bg-[#93000a]/20 transition-all"><span className="material-symbols-outlined">logout</span> <span className="font-mono text-xs uppercase tracking-tight font-bold">Disconnect</span></a>
+          <div className="mt-6 px-6 text-[#454747] text-[9px] tracking-[0.2em] font-mono uppercase leading-relaxed font-bold">Developed by<br /><span className="text-primary mt-1 block">The True Brightlence</span></div>
         </div>
       </aside>
 
@@ -403,6 +404,7 @@ function AuthGate({ onAuth }) {
           </button>
         </form>
       </motion.div>
+      <div className="absolute bottom-8 left-0 w-full text-center text-[#454747] text-[10px] tracking-[0.4em] font-mono uppercase font-bold z-0">Developed by <span className="text-primary">The True Brightlence</span></div>
     </div>
   )
 }
