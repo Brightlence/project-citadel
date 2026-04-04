@@ -13,3 +13,4 @@ anthropic>=0.28.0
 psycopg2-binary
 python-dotenv
 email-validator
+yfinance

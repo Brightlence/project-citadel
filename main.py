@@ -16,6 +16,7 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 import google.generativeai as genai
 import anthropic
 import openai
+import yfinance as yf
 from pydantic import BaseModel, EmailStr
 from typing import Optional, List
 from sqlalchemy.orm import Session
@@ -41,26 +42,21 @@ rulebook_genai_file = None
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/login")
 ALPHA_VANTAGE_API_KEY = os.getenv("ALPHA_VANTAGE_API_KEY")
 
-def fetch_alpha_vantage_data(symbol: str):
-    if not ALPHA_VANTAGE_API_KEY or not symbol:
-        return ""
-    url = f"https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol={symbol}&apikey={ALPHA_VANTAGE_API_KEY}"
+def fetch_yfinance_data(symbol: str):
+    if not symbol: return ""
     try:
-        resp = requests.get(url, timeout=5)
-        if resp.status_code == 200:
-            data = resp.json()
-            if "Global Quote" in data and data["Global Quote"]:
-                quote = data["Global Quote"]
-                price = quote.get("05. price", "N/A")
-                volume = quote.get("06. volume", "N/A")
-                change = quote.get("09. change", "N/A")
-                change_percent = quote.get("10. change percent", "N/A")
-                return f"LIVE ALPHA VANTAGE DATA -> Symbol: {symbol} | Price: ${price} | Change: {change} ({change_percent}) | Vol: {volume}"
-            elif "Information" in data:
-                 return f"LIVE DATA UNAVAILABLE (Alpha Vantage limits reached: {data['Information']})"
+        ticker = yf.Ticker(symbol)
+        data = ticker.history(period="1d")
+        if not data.empty:
+            price = round(data['Close'].iloc[0], 2)
+            volume = int(data['Volume'].iloc[0])
+            open_price = data['Open'].iloc[0]
+            change = round(price - open_price, 2)
+            change_percent = round((change / open_price) * 100, 2) if open_price else 0
+            return f"LIVE YFINANCE DATA -> Symbol: {symbol} | Price: ${price} | Change: {change} ({change_percent}%) | Vol: {volume}"
+        return f"LIVE DATA UNAVAILABLE (Symbol {symbol} might be invalid or delisted on Yahoo Finance)"
     except Exception as e:
-        return f"Error fetching live data: {e}"
-    return ""
+        return f"Error fetching live data from yfinance: {e}"
 
 # --- AUTH & CRYPTO UTILITIES ---
 def verify_password(plain_password, hashed_password):
@@ -375,7 +371,7 @@ async def analyze_trade(
         
         parsed_live_data = json.loads(live_data)
         asset_symbol = parsed_live_data.get("asset", "")
-        real_time_market_data = fetch_alpha_vantage_data(asset_symbol) if asset_symbol else ""
+        real_time_market_data = fetch_yfinance_data(asset_symbol) if asset_symbol else ""
 
         # ---------------------------------------------
         # AGENT 1: ELITE INSTITUTIONAL TRADING AI
