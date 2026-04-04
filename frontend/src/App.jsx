@@ -264,15 +264,15 @@ function Dashboard({ sessionToken, user, onLogout }) {
   }
 
   return (
-    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="bg-surface text-[#e2e2e2] h-screen flex font-body selection:bg-primary selection:text-black">
-      <aside className="w-64 bg-[#1b1b1b] flex flex-col py-6 border-r border-[#454747]/30 shadow-2xl relative z-50">
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="bg-surface text-[#e2e2e2] h-screen flex flex-col md:flex-row font-body selection:bg-primary selection:text-black">
+      <aside className="w-full md:w-64 h-auto md:h-full bg-[#1b1b1b] flex flex-col py-4 md:py-6 border-b md:border-b-0 md:border-r border-[#454747]/30 shadow-2xl relative z-50 shrink-0">
         <div className="px-6 mb-12"><h1 className="text-xl font-black text-white uppercase tracking-tighter">CITADEL</h1><p className="text-[10px] text-[#919191] tracking-widest mt-1">{user?.email}</p></div>
-        <nav className="flex-1">
-          <a onClick={() => setView('CHAT')} className={`flex items-center gap-3 px-6 py-4 cursor-pointer border-l-4 transition-all ${view === 'CHAT' ? 'bg-white text-black font-bold border-primary' : 'text-[#919191] border-transparent hover:text-white hover:bg-[#2a2a2a]'}`}><span className="material-symbols-outlined">dashboard</span> <span className="font-mono text-sm tracking-tight uppercase">Dashboard</span></a>
+        <nav className="flex-1 flex flex-row md:flex-col overflow-x-auto justify-center md:justify-start">
+          <a onClick={() => setView('CHAT')} className={`flex items-center justify-center md:justify-start gap-2 md:gap-3 px-4 md:px-6 py-2 md:py-4 cursor-pointer border-b-4 md:border-b-0 md:border-l-4 transition-all whitespace-nowrap flex-1 md:flex-none ${view === 'CHAT' ? 'bg-white md:bg-white text-black font-bold border-primary' : 'text-[#919191] border-transparent hover:text-white hover:bg-[#2a2a2a]'}`}><span className="material-symbols-outlined">dashboard</span> <span className="font-mono text-xs md:text-sm tracking-tight uppercase hidden sm:block md:block">Dashboard</span></a>
+          <a onClick={() => setView('SETTINGS')} className={`flex items-center justify-center md:justify-start gap-2 md:gap-3 px-4 md:px-6 py-2 md:py-4 cursor-pointer border-b-4 md:border-b-0 md:border-l-4 transition-all whitespace-nowrap flex-1 md:flex-none ${view === 'SETTINGS' ? 'bg-white md:bg-white text-black font-bold border-primary' : 'text-[#919191] border-transparent hover:text-white hover:bg-[#2a2a2a]'}`}><span className={`material-symbols-outlined`}>{user?.role === 'ADMIN' ? 'admin_panel_settings' : 'settings'}</span> <span className="font-mono text-xs tracking-widest font-bold uppercase hidden sm:block md:block">{user?.role === 'ADMIN' ? 'Settings' : 'Settings'}</span></a>
+          <a onClick={onLogout} className="flex items-center justify-center md:justify-start gap-2 md:gap-3 px-4 md:px-6 py-2 md:py-4 text-[#ffb4ab] cursor-pointer border-b-4 md:border-b-0 md:border-l-4 border-transparent hover:border-[#ffb4ab] hover:bg-[#93000a]/20 transition-all whitespace-nowrap flex-1 md:flex-none"><span className="material-symbols-outlined">logout</span> <span className="font-mono text-xs uppercase tracking-tight font-bold hidden sm:block md:block">Disconnect</span></a>
         </nav>
-        <div className="flex flex-col mt-auto pb-4">
-          <a onClick={() => setView('SETTINGS')} className={`flex items-center gap-3 px-6 py-4 cursor-pointer border-l-4 transition-all mb-2 ${view === 'SETTINGS' ? 'bg-white text-black font-bold border-primary' : 'text-[#919191] border-transparent hover:text-white hover:bg-[#2a2a2a]'}`}><span className={`material-symbols-outlined text-[20px]`}>{user?.role === 'ADMIN' ? 'admin_panel_settings' : 'settings'}</span> <span className="font-mono text-xs tracking-widest font-bold uppercase">{user?.role === 'ADMIN' ? 'Super Settings' : 'Settings'}</span></a>
-          <a onClick={onLogout} className="flex items-center gap-3 px-6 py-4 text-[#ffb4ab] cursor-pointer border-l-4 border-transparent hover:border-[#ffb4ab] hover:bg-[#93000a]/20 transition-all"><span className="material-symbols-outlined">logout</span> <span className="font-mono text-xs uppercase tracking-tight font-bold">Disconnect</span></a>
+        <div className="hidden md:flex flex-col mt-auto pb-4">
           <div className="mt-6 px-6 text-[#454747] text-[9px] tracking-[0.2em] font-mono uppercase leading-relaxed font-bold">Developed by<br /><span className="text-primary mt-1 block">The True Brightlence</span></div>
         </div>
       </aside>
@@ -293,10 +293,10 @@ function Dashboard({ sessionToken, user, onLogout }) {
 
         {view === 'SETTINGS' ? (user?.role === 'ADMIN' ? <AdminPanel token={sessionToken} /> : <UserSettingsPanel token={sessionToken} onLogout={onLogout} />) : (
           <>
-            <section className="flex-1 overflow-y-auto p-12 pb-40 space-y-12">
+            <section className="flex-1 overflow-y-auto p-4 md:p-12 pb-48 md:pb-40 space-y-8 md:space-y-12">
               {msgs.length === 0 && <div className="flex flex-col justify-center items-center h-full text-[#454747] opacity-60"><Terminal size={48} className="mb-4" /><span className="font-mono text-sm tracking-widest uppercase">AWAITING COMMAND</span></div>}
               {msgs.map((m, i) => m.type === 'user' ? (
-                <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} key={i} className={`flex flex-col items-end gap-2 w-full max-w-[90%] mx-auto ${m.isHist ? 'opacity-50 hover:opacity-100 transition-opacity' : ''}`}>
+                <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} key={i} className={`flex flex-col items-end gap-2 w-full md:max-w-[90%] mx-auto ${m.isHist ? 'opacity-50 hover:opacity-100 transition-opacity' : ''}`}>
                   <div className="bg-[#1b1b1b] p-6 border-l-[3px] border-primary max-w-6xl text-[15px] w-full shadow-lg leading-relaxed"><p>{m.text}</p>
                     {m.fileUrl && <div className="aspect-video w-[400px] bg-[#0e0e0e] mt-4 shadow-[0_0_20px_rgba(0,0,0,0.5)] p-0"><img src={m.fileUrl} className="w-full h-full object-cover" /></div>}
                   </div>
@@ -309,11 +309,11 @@ function Dashboard({ sessionToken, user, onLogout }) {
                     <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-[#454747] to-transparent opacity-50"></div>
                     <p className="text-[#c6c6c6]">{m.data?.ai_reasoning}</p>
                     {m.data?.trade_plan ? (
-                      <div className="grid grid-cols-4 gap-[2px] bg-[#2a2a2a] border border-[#2a2a2a] mt-8 font-mono shadow-inner">
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-[2px] bg-[#2a2a2a] border border-[#2a2a2a] mt-4 md:mt-8 font-mono shadow-inner">
                         {['ENTRY', 'VERDICT', 'STOPLOSS', 'TAKE_PROFIT'].map((k, j) => (
-                          <div key={k} className="bg-[#131313] p-5 text-center hover:bg-[#1b1b1b] transition-colors">
-                            <p className={`text-[10px] tracking-[0.2em] mb-2 ${j === 2 ? 'text-[#ffb4ab]' : j === 3 ? 'text-primary' : 'text-[#919191]'}`}>{k}</p>
-                            <p className={`text-2xl font-light tracking-widest ${j === 1 && m.data.verdict === 'EXECUTE' ? 'text-primary font-bold' : j === 1 ? 'text-[#ffb4ab] font-bold' : 'text-white'}`}>
+                          <div key={k} className="bg-[#131313] p-3 md:p-5 text-center hover:bg-[#1b1b1b] transition-colors">
+                            <p className={`text-[8px] md:text-[10px] tracking-[0.2em] mb-1 md:mb-2 ${j === 2 ? 'text-[#ffb4ab]' : j === 3 ? 'text-primary' : 'text-[#919191]'}`}>{k}</p>
+                            <p className={`text-lg md:text-2xl font-light tracking-widest ${j === 1 && m.data.verdict === 'EXECUTE' ? 'text-primary font-bold' : j === 1 ? 'text-[#ffb4ab] font-bold' : 'text-white'}`}>
                               {j === 0 ? m.data.trade_plan.entry : j === 1 ? m.data.verdict : j === 2 ? m.data.trade_plan.sl : m.data.trade_plan.tp}
                             </p>
                           </div>
@@ -328,25 +328,25 @@ function Dashboard({ sessionToken, user, onLogout }) {
               {loading && <div className="flex items-center gap-3 p-6 border border-[#2a2a2a] bg-[#0e0e0e] max-w-4xl mx-auto shadow-2xl relative overflow-hidden"><div className="w-2.5 h-2.5 bg-primary animate-ping"></div><span className="font-mono text-primary text-[10px] tracking-[0.3em] font-bold uppercase z-10">Synthesizing Protocols...</span><div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/diagmonds-light.png')] opacity-10 animate-pulse"></div></div>}
               <div ref={endRef} />
             </section>
-            <footer className="absolute bottom-10 left-10 right-10 z-40 flex flex-col items-stretch gap-2">
+            <footer className="absolute bottom-4 md:bottom-10 left-4 md:left-10 right-4 md:right-10 z-40 flex flex-col items-stretch gap-2">
               {file && (
                 <div className="relative p-2 bg-[#131313] border border-[#454747] shadow-xl flex items-start gap-4 w-full transition-all duration-300">
-                  <div className="h-20 aspect-video bg-[#0e0e0e] shadow-inner p-1">
+                  <div className="h-16 md:h-20 aspect-video bg-[#0e0e0e] shadow-inner p-1">
                     <img src={URL.createObjectURL(file)} className="w-full h-full object-cover border border-[#2a2a2a]" />
                   </div>
                   <div className="flex flex-col mt-2">
-                    <span className="text-[10px] text-[#e2e2e2] font-bold tracking-widest uppercase truncate max-w-[300px]">{file.name}</span>
+                    <span className="text-[10px] text-[#e2e2e2] font-bold tracking-widest uppercase truncate max-w-[200px] md:max-w-[300px]">{file.name}</span>
                     <span className="text-[8px] text-[#919191] tracking-[0.2em] uppercase mt-1">Ready for upload</span>
                   </div>
                   <button onClick={() => setFile(null)} className="ml-auto text-[#ffb4ab] hover:bg-[#93000a] hover:text-white border border-transparent hover:border-[#93000a] p-1 transition-colors"><span className="material-symbols-outlined text-[18px]">close</span></button>
                 </div>
               )}
-              <div className="w-full bg-[#1b1b1b]/95 backdrop-blur-xl p-2 border border-[#474747]/80 shadow-[0_20px_50px_rgba(0,0,0,0.8)] flex gap-2 transition-all hover:border-[#919191]">
-                <button className="p-4 text-[#919191] hover:text-white hover:bg-[#2a2a2a] transition-colors" onClick={() => fileRef.current?.click()}><span className="material-symbols-outlined">attachment</span></button>
+              <div className="w-full bg-[#1b1b1b]/95 backdrop-blur-xl p-2 border border-[#474747]/80 shadow-[0_20px_50px_rgba(0,0,0,0.8)] flex gap-1 md:gap-2 transition-all hover:border-[#919191]">
+                <button className="p-2 md:p-4 text-[#919191] hover:text-white hover:bg-[#2a2a2a] transition-colors flex justify-center items-center" onClick={() => fileRef.current?.click()}><span className="material-symbols-outlined text-lg md:text-2xl">attachment</span></button>
                 <input type="file" ref={fileRef} className="hidden" onChange={e => setFile(e.target.files[0])} />
-                <input type="text" className="w-24 bg-transparent border-r border-[#454747] text-primary px-4 outline-none font-mono text-sm tracking-widest uppercase placeholder-[#454747]" placeholder="SYM" value={assetState} onChange={e => setAsset(e.target.value.toUpperCase())} maxLength={8} />
-                <input type="text" className="flex-1 bg-transparent border-none text-[#e2e2e2] px-4 outline-none font-body text-sm tracking-wide" placeholder={file ? `Directive for ${file.name}...` : "Command AI or attach market chart..."} value={inputState} onChange={e => setInput(e.target.value)} onKeyDown={e => e.key === 'Enter' && send()} />
-                <button className="bg-primary text-black px-6 hover:bg-white transition-colors font-bold shadow-[0_0_15px_rgba(255,255,255,0.2)]" onClick={send}><span className="material-symbols-outlined">arrow_forward</span></button>
+                <input type="text" className="w-16 md:w-24 bg-transparent border-r border-[#454747] text-primary px-2 md:px-4 outline-none font-mono text-xs md:text-sm tracking-widest uppercase placeholder-[#454747]" placeholder="SYM" value={assetState} onChange={e => setAsset(e.target.value.toUpperCase())} maxLength={8} />
+                <input type="text" className="flex-1 bg-transparent border-none text-[#e2e2e2] px-2 md:px-4 outline-none font-body text-xs md:text-sm tracking-wide" placeholder={file ? `Directive for ${file.name}...` : "Command AI..."} value={inputState} onChange={e => setInput(e.target.value)} onKeyDown={e => e.key === 'Enter' && send()} />
+                <button className="bg-primary text-black px-4 md:px-6 hover:bg-white transition-colors font-bold shadow-[0_0_15px_rgba(255,255,255,0.2)] flex justify-center items-center p-2 md:p-0" onClick={send}><span className="material-symbols-outlined text-lg md:text-2xl">arrow_forward</span></button>
               </div>
             </footer>
           </>
