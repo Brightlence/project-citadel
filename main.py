@@ -17,6 +17,7 @@ import google.generativeai as genai
 import anthropic
 import openai
 import yfinance as yf
+import re
 from pydantic import BaseModel, EmailStr
 from typing import Optional, List
 from sqlalchemy.orm import Session
@@ -42,21 +43,34 @@ rulebook_genai_file = None
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/v1/auth/login")
 ALPHA_VANTAGE_API_KEY = os.getenv("ALPHA_VANTAGE_API_KEY")
 
-def fetch_yfinance_data(symbol: str):
+def fetch_yfinance_data(symbol: str, timeframe: str = "15m"):
     if not symbol: return ""
     try:
         ticker = yf.Ticker(symbol)
-        data = ticker.history(period="1d")
+        
+        period = "5d"
+        interval = "15m"
+        timeframe = timeframe.lower()
+        if timeframe in ["1m", "5m"]: period = "1d"; interval = timeframe
+        elif timeframe in ["15m", "30m"]: period = "5d"; interval = timeframe
+        elif timeframe in ["1h", "60m"]: period = "1mo"; interval = "1h"
+        elif timeframe == "4h": period = "1mo"; interval = "1h"
+        elif timeframe == "1d": period = "6mo"; interval = "1d"
+        elif timeframe == "1wk": period = "2y"; interval = "1wk"
+
+        data = ticker.history(period=period, interval=interval)
+        
         if not data.empty:
-            price = round(data['Close'].iloc[0], 2)
-            volume = int(data['Volume'].iloc[0])
-            open_price = data['Open'].iloc[0]
-            change = round(price - open_price, 2)
-            change_percent = round((change / open_price) * 100, 2) if open_price else 0
-            return f"LIVE YFINANCE DATA -> Symbol: {symbol} | Price: ${price} | Change: {change} ({change_percent}%) | Vol: {volume}"
-        return f"LIVE DATA UNAVAILABLE (Symbol {symbol} might be invalid or delisted on Yahoo Finance)"
+            price = round(data['Close'].iloc[-1], 2)
+            volume = int(data['Volume'].iloc[-1])
+            
+            df_slice = data.tail(100)[['Open', 'High', 'Low', 'Close', 'Volume']].round(4)
+            csv_matrix = df_slice.to_csv(index=True)
+            
+            return f"LIVE Quote -> Symbol: {symbol} | Current Price: ${price}\n\nRAW HISTORICAL MARKET MATRIX ({interval}, LAST 100 BARS):\n{csv_matrix}"
+        return f"LIVE DATA UNAVAILABLE FOR {symbol}"
     except Exception as e:
-        return f"Error fetching live data from yfinance: {e}"
+        return f"Error fetching live data array: {e}"
 
 # --- AUTH & CRYPTO UTILITIES ---
 def verify_password(plain_password, hashed_password):
@@ -371,7 +385,12 @@ async def analyze_trade(
         
         parsed_live_data = json.loads(live_data)
         asset_symbol = parsed_live_data.get("asset", "")
-        real_time_market_data = fetch_yfinance_data(asset_symbol) if asset_symbol else ""
+        user_query = parsed_live_data.get("user_query", "").lower()
+        
+        timeframe_match = re.search(r'\b(1m|5m|15m|30m|1h|4h|1d|1wk)\b', user_query)
+        detected_timeframe = timeframe_match.group(1) if timeframe_match else "15m"
+
+        real_time_market_data = fetch_yfinance_data(asset_symbol, detected_timeframe) if asset_symbol else ""
 
         # ---------------------------------------------
         # AGENT 1: ELITE INSTITUTIONAL TRADING AI
@@ -390,8 +409,8 @@ You must think like a professional trader using:
 ========================
 INPUTS
 ========================
-- Live market data: {live_data}
-- Real-time quote: {real_time_market_data}
+- Live market qualitative data: {live_data}
+- Quantitative Raw Matrix (Live Price + 100-Bar Array): {real_time_market_data}
 - User Profile: Institutional standard (strict R:R, strict capital preservation).
 
 Follow these exactly in your analysis:
