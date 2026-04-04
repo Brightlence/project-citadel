@@ -48,15 +48,16 @@ def fetch_yfinance_data(symbol: str, timeframe: str = "15m"):
     try:
         ticker = yf.Ticker(symbol)
         
-        period = "5d"
+        # Adjust periods to massive historical limits to guarantee at least 1,000 bars
+        period = "60d"
         interval = "15m"
         timeframe = timeframe.lower()
-        if timeframe in ["1m", "5m"]: period = "1d"; interval = timeframe
-        elif timeframe in ["15m", "30m"]: period = "5d"; interval = timeframe
-        elif timeframe in ["1h", "60m"]: period = "1mo"; interval = "1h"
-        elif timeframe == "4h": period = "1mo"; interval = "1h"
-        elif timeframe == "1d": period = "6mo"; interval = "1d"
-        elif timeframe == "1wk": period = "2y"; interval = "1wk"
+        if timeframe in ["1m", "5m"]: period = "7d"; interval = timeframe
+        elif timeframe in ["15m", "30m"]: period = "60d"; interval = timeframe
+        elif timeframe in ["1h", "60m"]: period = "730d"; interval = "1h"
+        elif timeframe == "4h": period = "730d"; interval = "1h" # Fallback approximation
+        elif timeframe == "1d": period = "10y"; interval = "1d"
+        elif timeframe == "1wk": period = "max"; interval = "1wk"
 
         data = ticker.history(period=period, interval=interval)
         
@@ -64,10 +65,11 @@ def fetch_yfinance_data(symbol: str, timeframe: str = "15m"):
             price = round(data['Close'].iloc[-1], 2)
             volume = int(data['Volume'].iloc[-1])
             
-            df_slice = data.tail(100)[['Open', 'High', 'Low', 'Close', 'Volume']].round(4)
+            # Massive 1,000 candle CSV mathematical matrix
+            df_slice = data.tail(1000)[['Open', 'High', 'Low', 'Close', 'Volume']].round(4)
             csv_matrix = df_slice.to_csv(index=True)
             
-            return f"LIVE Quote -> Symbol: {symbol} | Current Price: ${price}\n\nRAW HISTORICAL MARKET MATRIX ({interval}, LAST 100 BARS):\n{csv_matrix}"
+            return f"LIVE Quote -> Symbol: {symbol} | Current Price: ${price}\n\nRAW HISTORICAL MARKET MATRIX ({interval}, LAST 1000 BARS):\n{csv_matrix}"
         return f"LIVE DATA UNAVAILABLE FOR {symbol}"
     except Exception as e:
         return f"Error fetching live data array: {e}"
@@ -410,7 +412,7 @@ You must think like a professional trader using:
 INPUTS
 ========================
 - Live market qualitative data: {live_data}
-- Quantitative Raw Matrix (Live Price + 100-Bar Array): {real_time_market_data}
+- Quantitative Raw Matrix (Live Price + 1000-Bar Array): {real_time_market_data}
 - User Profile: Institutional standard (strict R:R, strict capital preservation).
 
 Follow these exactly in your analysis:
