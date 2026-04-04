@@ -89,6 +89,38 @@ def fetch_yfinance_data(symbol: str, timeframe: str = "15m"):
     except Exception as e:
         return f"Error fetching live data array: {e}"
 
+def fetch_fundamental_data(symbol: str) -> str:
+    if not symbol: return "No symbol provided for news fetch."
+    try:
+        # Intelligently Auto-Format Forex and Crypto tickers for Yahoo Finance native standards
+        original_symbol = symbol
+        symbol = symbol.upper().strip()
+        if len(symbol) == 6 and symbol.isalpha() and not symbol.endswith("=X"):
+            symbol = f"{symbol}=X" 
+        elif len(symbol) in [6, 7] and symbol.endswith("USD") and "-" not in symbol and symbol != "AUDUSD=X":
+            if symbol.startswith("BTC") or symbol.startswith("ETH") or symbol.startswith("SOL"):
+                symbol = f"{symbol[:-3]}-USD"
+
+        session = requests.Session()
+        session.headers.update({
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"
+        })
+        ticker = yf.Ticker(symbol, session=session)
+        news_items = ticker.news
+        
+        if not news_items:
+            return f"No recent headlines found for {original_symbol}."
+            
+        formatted_news = f"RECENT HEADLINES FOR {original_symbol}:\n"
+        for i, item in enumerate(news_items[:10]): # Get top 10 news
+            headline = item.get('title', 'Unknown Title')
+            publisher = item.get('publisher', 'Unknown Publisher')
+            formatted_news += f"{i+1}. {headline} (Source: {publisher})\n"
+            
+        return formatted_news
+    except Exception as e:
+        return f"Warning: Fundamental data currently unavailable ({str(e)})."
+
 # --- AUTH & CRYPTO UTILITIES ---
 def verify_password(plain_password, hashed_password):
     return bcrypt.checkpw(plain_password.encode('utf-8'), hashed_password.encode('utf-8'))
@@ -408,6 +440,7 @@ async def analyze_trade(
         detected_timeframe = timeframe_match.group(1) if timeframe_match else "15m"
 
         real_time_market_data = fetch_yfinance_data(asset_symbol, detected_timeframe) if asset_symbol else ""
+        fundamental_news_data = fetch_fundamental_data(asset_symbol) if asset_symbol else ""
 
         # ---------------------------------------------
         # AGENT 1: ELITE INSTITUTIONAL TRADING AI
@@ -421,12 +454,14 @@ You must think like a professional trader using:
 - Market Structure
 - Liquidity theory
 - Risk management
+- Fundamental News and Macroeconomic context
 - Uploaded chart pattern pdf
 
 ========================
 INPUTS
 ========================
 - Live market qualitative data: {live_data}
+- Fundamental News Context: {fundamental_news_data}
 - Quantitative Raw Matrix (Live Price + 1000-Bar Array): {real_time_market_data}
 - User Profile: Institutional standard (strict R:R, strict capital preservation).
 
@@ -444,40 +479,49 @@ STEP 2: LIQUIDITY & INTENT
 - Identify resting liquidity. Detect fake breakouts, stop hunts.
 
 ========================
-STEP 3: TRADE SETUP VALIDATION
+STEP 3: FUNDAMENTAL/NEWS CATALYST
 ========================
-- Validate Structure, Entry, R:R >= 1:2, Market conditions.
+- Review the injected Fundamental News Context. 
+- Does the real-world news narrative align with the technical chart? 
+- Will upcoming data or recent headlines cause unpredictable liquidity sweeps that endanger this setup?
+- If the news severely contradicts the technicals or indicates high impending volatility, you must factor this into invalidating the trade.
+
+========================
+STEP 4: TRADE SETUP VALIDATION
+========================
+- Validate Structure, Entry, Catalyst, R:R >= 1:2, Market conditions.
 - If invalid, state "NO TRADE" explicitly.
 
 ========================
-STEP 4: ENTRY STRATEGY
+STEP 5: ENTRY STRATEGY
 ========================
 - Define entry zone, SL, TP (min 1:2), Entry type.
 
 ========================
-STEP 5: TIME-BASED INTELLIGENCE
+STEP 6: TIME-BASED INTELLIGENCE
 ========================
 - If not ready, state "WAIT" and conditions.
 
 ========================
-STEP 6: RISK ENGINE
+STEP 7: RISK ENGINE
 ========================
 - Calculate position parameters.
 
 ========================
-STEP 7: CONFIDENCE & QUALITY SCORE
+STEP 8: CONFIDENCE & QUALITY SCORE
 ========================
 - Output Confidence Score (0-100) and Quality Score (0-10)
 
 ========================
-STEP 8: TRADE DECISION OUTPUT
+STEP 9: TRADE DECISION OUTPUT
 ========================
 - Choose ONE: 1. EXECUTE TRADE | 2. WAIT | 3. NO TRADE
 
 ========================
-STEP 9: PROFESSIONAL SUMMARY
+STEP 10: PROFESSIONAL SUMMARY
 ========================
 - Bias, Decision, Entry, Stop Loss, Take Profit, Risk/Reward, Confidence, Reasoning.
+- Note how the fundamental news impacted your decision.
 """
 
         async def fetch_gemini_analysis():
