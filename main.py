@@ -46,6 +46,15 @@ ALPHA_VANTAGE_API_KEY = os.getenv("ALPHA_VANTAGE_API_KEY")
 def fetch_yfinance_data(symbol: str, timeframe: str = "15m"):
     if not symbol: return ""
     try:
+        # Intelligently Auto-Format Forex and Crypto tickers for Yahoo Finance native standards
+        symbol = symbol.upper().strip()
+        if len(symbol) == 6 and symbol.isalpha() and not symbol.endswith("=X"):
+            symbol = f"{symbol}=X" # Auto converts AUDUSD to AUDUSD=X
+        elif len(symbol) in [6, 7] and symbol.endswith("USD") and "-" not in symbol and symbol != "AUDUSD=X":
+            # Auto converts BTCUSD to BTC-USD (fallback attempt)
+            if symbol.startswith("BTC") or symbol.startswith("ETH") or symbol.startswith("SOL"):
+                symbol = f"{symbol[:-3]}-USD"
+
         ticker = yf.Ticker(symbol)
         
         # Adjust periods to massive historical limits to guarantee at least 1,000 bars
