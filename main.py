@@ -56,12 +56,8 @@ def fetch_yfinance_data(symbol: str, timeframe: str = "15m"):
             if symbol.startswith("BTC") or symbol.startswith("ETH") or symbol.startswith("SOL"):
                 symbol = f"{symbol[:-3]}-USD"
 
-        # Bypass Yahoo Finance Rate Limits perfectly on Render Cloud Shared IPs
-        session = requests.Session()
-        session.headers.update({
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"
-        })
-        ticker = yf.Ticker(symbol, session=session)
+        # Let yfinance internally handle the curl_cffi session to bypass cloudflare blocks
+        ticker = yf.Ticker(symbol)
         
         # Adjust periods to massive historical limits to guarantee at least 1,000 bars
         period = "60d"
@@ -101,11 +97,8 @@ def fetch_fundamental_data(symbol: str) -> str:
             if symbol.startswith("BTC") or symbol.startswith("ETH") or symbol.startswith("SOL"):
                 symbol = f"{symbol[:-3]}-USD"
 
-        session = requests.Session()
-        session.headers.update({
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"
-        })
-        ticker = yf.Ticker(symbol, session=session)
+        # Let yfinance internally handle the curl_cffi session to bypass cloudflare blocks
+        ticker = yf.Ticker(symbol)
         news_items = ticker.news
         
         if not news_items:
