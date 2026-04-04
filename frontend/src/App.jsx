@@ -48,6 +48,12 @@ function AdminPanel({ token }) {
     fetchData()
   }
 
+  const clearRevoked = async () => {
+    if (!window.confirm("Permanently wipe all revoked tokens from the cloud database?")) return;
+    await fetch(`${API}/api/v1/admin/tokens/revoked`, { method: 'DELETE', headers: { Authorization: `Bearer ${token}` } })
+    fetchData()
+  }
+
   const deleteUser = async (id) => {
     const res = await fetch(`${API}/api/v1/admin/users/${id}`, { method: 'DELETE', headers: { Authorization: `Bearer ${token}` } })
     if (res.ok) fetchData()
@@ -65,7 +71,10 @@ function AdminPanel({ token }) {
             <h3 className="text-lg font-bold tracking-widest">ACTIVE HARDWARE TOKENS</h3>
             <p className="text-[10px] text-[#5d5f5f] mt-1 tracking-widest uppercase">Gated Access Keys for System Registration</p>
           </div>
-          <button onClick={generateToken} className="bg-primary text-black px-6 py-2 font-bold text-xs uppercase tracking-widest">Forge Key</button>
+          <div className="flex gap-2">
+            <button onClick={clearRevoked} className="border border-[#93000a] text-[#ffb4ab] px-4 py-2 font-bold text-[10px] md:text-xs uppercase tracking-widest hover:bg-[#93000a] hover:text-white transition-all">Clear Revoked</button>
+            <button onClick={generateToken} className="bg-primary text-black px-4 md:px-6 py-2 font-bold text-[10px] md:text-xs uppercase tracking-widest">Forge Key</button>
+          </div>
         </div>
         <div className="grid gap-2">
           {tokens.map(t => (

@@ -323,6 +323,12 @@ def revoke_token(token_id: int, admin: models.User = Depends(get_current_admin),
     db.commit()
     return {"message": "Token Signature Revoked and Disabled Successfully."}
 
+@app.delete("/api/v1/admin/tokens/revoked")
+def clear_revoked_tokens(admin: models.User = Depends(get_current_admin), db: Session = Depends(get_db)):
+    db.query(models.AccessToken).filter(models.AccessToken.is_active == False).delete()
+    db.commit()
+    return {"message": "Revoked keys permanently cleared."}
+
 # ---------------------------------------------------------
 # 3. TRADING PLATFORM ENGINE
 # ---------------------------------------------------------
