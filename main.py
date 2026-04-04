@@ -17,6 +17,7 @@ import google.generativeai as genai
 import anthropic
 import openai
 import yfinance as yf
+import requests
 import re
 from pydantic import BaseModel, EmailStr
 from typing import Optional, List
@@ -55,7 +56,12 @@ def fetch_yfinance_data(symbol: str, timeframe: str = "15m"):
             if symbol.startswith("BTC") or symbol.startswith("ETH") or symbol.startswith("SOL"):
                 symbol = f"{symbol[:-3]}-USD"
 
-        ticker = yf.Ticker(symbol)
+        # Bypass Yahoo Finance Rate Limits perfectly on Render Cloud Shared IPs
+        session = requests.Session()
+        session.headers.update({
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"
+        })
+        ticker = yf.Ticker(symbol, session=session)
         
         # Adjust periods to massive historical limits to guarantee at least 1,000 bars
         period = "60d"
