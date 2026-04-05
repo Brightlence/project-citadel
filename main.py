@@ -87,31 +87,59 @@ def fetch_yfinance_data(symbol: str, timeframe: str = "15m"):
 
 def fetch_fundamental_data(symbol: str) -> str:
     if not symbol: return "No symbol provided for news fetch."
+    original_symbol = symbol
+        
+    formatted_news = f"FUNDAMENTAL CONTEXT FOR {original_symbol}:\n"
+    
+    # --- 1. FOREX FACTORY ECONOMIC CALENDAR ---
     try:
-        # Intelligently Auto-Format Forex and Crypto tickers for Yahoo Finance native standards
-        original_symbol = symbol
-        symbol = symbol.upper().strip()
+        url = "https://nfs.faireconomy.media/ff_calendar_thisweek.json"
+        headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
+        ff_res = requests.get(url, headers=headers, timeout=5)
+        if ff_res.status_code == 200:
+            ff_data = ff_res.json()
+            relevant_currencies = ['USD']
+            clean_sym = original_symbol.upper().strip().replace('=X', '')
+            if len(clean_sym) >= 6:
+                relevant_currencies.extend([clean_sym[:3], clean_sym[3:6]])
+            elif len(clean_sym) == 3:
+                relevant_currencies.append(clean_sym)
+            
+            high_impact_events = []
+            for event in ff_data:
+                if event.get('country') in relevant_currencies and event.get('impact') in ['High', 'Medium']:
+                    dt = event.get('date', '')
+                    high_impact_events.append(f"- [{event.get('impact')}] {event.get('country')}: {event.get('title')} (Time: {dt})")
+            
+            if high_impact_events:
+                formatted_news += "\n[UPCOMING MACRO ECONOMIC EVENTS (FOREX FACTORY)]\n" + "\n".join(high_impact_events) + "\n"
+    except Exception:
+        pass
+
+    # --- 2. YAHOO FINANCE HEADLINES ---
+    try:
+        symbol = original_symbol.upper().strip()
         if len(symbol) == 6 and symbol.isalpha() and not symbol.endswith("=X"):
             symbol = f"{symbol}=X" 
         elif len(symbol) in [6, 7] and symbol.endswith("USD") and "-" not in symbol and symbol != "AUDUSD=X":
             if symbol.startswith("BTC") or symbol.startswith("ETH") or symbol.startswith("SOL"):
                 symbol = f"{symbol[:-3]}-USD"
 
-        # Let yfinance internally handle the curl_cffi session to bypass cloudflare blocks
         ticker = yf.Ticker(symbol)
         news_items = ticker.news
         
-        if not news_items:
-            return f"No recent headlines found for {original_symbol}."
-            
-        formatted_news = f"RECENT HEADLINES FOR {original_symbol}:\n"
-        for i, item in enumerate(news_items[:10]): # Get top 10 news
-            headline = item.get('title', 'Unknown Title')
-            publisher = item.get('publisher', 'Unknown Publisher')
-            formatted_news += f"{i+1}. {headline} (Source: {publisher})\n"
+        if news_items:
+            formatted_news += "\n[RECENT YAHOO HEADLINES]\n"
+            for i, item in enumerate(news_items[:10]):
+                headline = item.get('title', 'Unknown Title')
+                publisher = item.get('publisher', 'Unknown Publisher')
+                formatted_news += f"{i+1}. {headline} (Source: {publisher})\n"
+        elif "[UPCOMING MACRO" not in formatted_news:
+            formatted_news += "\nNo recent specific headlines found."
             
         return formatted_news
     except Exception as e:
+        if "[UPCOMING MACRO" in formatted_news: return formatted_news
         return f"Warning: Fundamental data currently unavailable ({str(e)})."
 
 # --- AUTH & CRYPTO UTILITIES ---
