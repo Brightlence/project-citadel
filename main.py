@@ -59,16 +59,16 @@ def fetch_yfinance_data(symbol: str, timeframe: str = "15m"):
         # Let yfinance internally handle the curl_cffi session to bypass cloudflare blocks
         ticker = yf.Ticker(symbol)
         
-        # Adjust periods to massive historical limits to guarantee at least 1,000 bars
-        period = "60d"
+        # Adjust periods to precise historical limits to prevent 429 Rate Limits
+        period = "1mo"
         interval = "15m"
         timeframe = timeframe.lower()
-        if timeframe in ["1m", "5m"]: period = "7d"; interval = timeframe
-        elif timeframe in ["15m", "30m"]: period = "60d"; interval = timeframe
-        elif timeframe in ["1h", "60m"]: period = "730d"; interval = "1h"
-        elif timeframe == "4h": period = "730d"; interval = "1h" # Fallback approximation
-        elif timeframe == "1d": period = "10y"; interval = "1d"
-        elif timeframe == "1wk": period = "max"; interval = "1wk"
+        if timeframe in ["1m", "5m"]: period = "5d"; interval = timeframe
+        elif timeframe in ["15m", "30m"]: period = "1mo"; interval = timeframe
+        elif timeframe in ["1h", "60m"]: period = "2y"; interval = "1h"
+        elif timeframe == "4h": period = "2y"; interval = "1h" # Fallback approximation
+        elif timeframe == "1d": period = "5y"; interval = "1d"
+        elif timeframe == "1wk": period = "10y"; interval = "1wk"
 
         data = ticker.history(period=period, interval=interval)
         
