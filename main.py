@@ -105,11 +105,19 @@ def fetch_fundamental_data(symbol: str) -> str:
             elif len(clean_sym) == 3:
                 relevant_currencies.append(clean_sym)
             
+            now = datetime.now(timezone.utc)
             high_impact_events = []
             for event in ff_data:
                 if event.get('country') in relevant_currencies and event.get('impact') in ['High', 'Medium']:
-                    dt = event.get('date', '')
-                    high_impact_events.append(f"- [{event.get('impact')}] {event.get('country')}: {event.get('title')} (Time: {dt})")
+                    dt_str = event.get('date', '')
+                    try:
+                        dt = datetime.fromisoformat(dt_str).astimezone(timezone.utc)
+                        diff_hours = (dt - now).total_seconds() / 3600
+                        if diff_hours < -24: continue # Skip if it happened more than 24 hours ago
+                        time_context = f"Happened {abs(diff_hours):.1f} hours ago" if diff_hours < 0 else f"Scheduled in exactly {diff_hours:.1f} hours from NOW"
+                        high_impact_events.append(f"- [{event.get('impact')}] {event.get('country')}: {event.get('title')} ({time_context})")
+                    except Exception:
+                        high_impact_events.append(f"- [{event.get('impact')}] {event.get('country')}: {event.get('title')} (Time: {dt_str})")
             
             if high_impact_events:
                 formatted_news += "\n[UPCOMING MACRO ECONOMIC EVENTS (FOREX FACTORY)]\n" + "\n".join(high_impact_events) + "\n"
@@ -482,6 +490,7 @@ You must think like a professional trader using:
 INPUTS
 ========================
 - Live market qualitative data: {live_data}
+- Requested Execution Timeframe: {detected_timeframe} (CRITICAL FOR TIMESCALE DYNAMICS)
 - Fundamental News Context: {fundamental_news_data}
 - Quantitative Raw Matrix (Live Price + 1000-Bar Array): {real_time_market_data}
 - User Profile: Institutional standard (strict R:R, strict capital preservation).
@@ -502,10 +511,10 @@ STEP 2: LIQUIDITY & INTENT
 ========================
 STEP 3: FUNDAMENTAL/NEWS CATALYST
 ========================
-- Review the injected Fundamental News Context. 
-- Does the real-world news narrative align with the technical chart? 
-- Will upcoming data or recent headlines cause unpredictable liquidity sweeps that endanger this setup?
-- If the news severely contradicts the technicals or indicates high impending volatility, you must factor this into invalidating the trade.
+- Review the Fundamental News Context. 
+- TIMEFRAME DYNAMICS: If Requested Timeframe is Scalping (1m-15m), trades mature quickly. DO NOT reject a perfect technical scalp if the high-impact news is more than 6 hours away from NOW. 
+- If Timeframe is Swing/Intraday (1h-1wk), trades execute slowly over days. High-impact news scheduled within the week poses an active threat to Stop Losses and MUST be aggressively factored in.
+- ALWAYS REMEMBER: Your primary goal is to PREVENT bad trades, not generate trades. The timeframe dynamics DO NOT relax your strict SMC or R:R rules, they only logically prevent distant news from blinding intraday setups.
 
 ========================
 STEP 4: TRADE SETUP VALIDATION
